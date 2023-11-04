@@ -22,36 +22,16 @@ public class BackgammonGame {
         System.out.println("Initial board:");
         BackgammonBoard.display();
 
+        boolean p1Turn = true;
+
         while (true) {
-            System.out.print(p1name + ", enter 'roll' to roll the dice or 'quit' to exit: ");
+            p1score = 0;
+            p2score = 0;
+            System.out.print((p1Turn ? p1name : p2name) + ", enter 'roll' to roll the dice or 'quit' to exit: ");
             String input = scanner.nextLine();
 
             if (input.equals("quit")) {
-                System.out.println("Game over. Final scores:");
-                System.out.println(p1name + ": " + p1score);
-                System.out.println(p2name + ": " + p2score);
-                break;
-            }
-
-            if (input.equals("roll")) {
-                
-                int dice1 = random.nextInt(6) + 1;
-                int dice2 = random.nextInt(6) + 1;
-
-                System.out.println(p1name + " rolled a " + dice1 + " and a " + dice2);
-                p1score += dice1 + dice2;
-                System.out.println("Current score: " + p1name + ": " + p1score + ", " + p2name + ": " + p2score);
-            }
-        }
-
-         while (true) {
-            System.out.print(p2name + ", enter 'roll' to roll the dice or 'quit' to exit: ");
-            String input = scanner.nextLine();
-
-            if (input.equals("quit")) {
-                System.out.println("Game over. Final scores:");
-                System.out.println(p1name + ": " + p1score);
-                System.out.println(p2name + ": " + p2score);
+                System.out.println("Game over!");
                 break;
             }
 
@@ -59,12 +39,19 @@ public class BackgammonGame {
                 int dice1 = random.nextInt(6) + 1;
                 int dice2 = random.nextInt(6) + 1;
 
-                System.out.println(p2name + " rolled a " + dice1 + " and a " + dice2);
-                p2score += dice1 + dice2;
-                System.out.println("Current score: " + p1name + ": " + p1score + ", " + p2name + ": " + p2score);
+                System.out.println((p1Turn ? p1name : p2name) + " rolled a " + dice1 + " and a " + dice2);
+
+                if (p1Turn) {
+                    p1score += dice1 + dice2;
+                } else {
+                    p2score += dice1 + dice2;
+                }
+
+                System.out.println("Total of the dice: " + p1name + ": " + p1score + ", " + p2name + ": " + p2score);
+                p1Turn = !p1Turn; 
             }
         }
-        
+
         scanner.close();
     }
 
@@ -72,12 +59,11 @@ public class BackgammonGame {
         Scanner scanner = new Scanner(System.in);
 
         System.out.print("Enter the name of Player 1: ");
-        String p1name = scanner.nextLine();
+        String player1Name = scanner.nextLine();
         System.out.print("Enter the name of Player 2: ");
-        String p2name = scanner.nextLine();
+        String player2Name = scanner.nextLine();
 
-        BackgammonGame game = new BackgammonGame(p1name, p2name);
+        BackgammonGame game = new BackgammonGame(player1Name, player2Name);
         game.play();
     }
-    
 }

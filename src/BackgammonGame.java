@@ -35,6 +35,7 @@ public class BackgammonGame {
             }
 
             if (input.equals("roll")) {
+                
                 int dice1 = random.nextInt(6) + 1;
                 int dice2 = random.nextInt(6) + 1;
 
@@ -44,6 +45,27 @@ public class BackgammonGame {
             }
         }
 
+         while (true) {
+            System.out.print(p2name + ", enter 'roll' to roll the dice or 'quit' to exit: ");
+            String input = scanner.nextLine();
+
+            if (input.equals("quit")) {
+                System.out.println("Game over. Final scores:");
+                System.out.println(p1name + ": " + p1score);
+                System.out.println(p2name + ": " + p2score);
+                break;
+            }
+
+            if (input.equals("roll")) {
+                int dice1 = random.nextInt(6) + 1;
+                int dice2 = random.nextInt(6) + 1;
+
+                System.out.println(p2name + " rolled a " + dice1 + " and a " + dice2);
+                p2score += dice1 + dice2;
+                System.out.println("Current score: " + p1name + ": " + p1score + ", " + p2name + ": " + p2score);
+            }
+        }
+        
         scanner.close();
     }
 

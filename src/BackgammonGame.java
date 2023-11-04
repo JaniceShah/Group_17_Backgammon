@@ -20,6 +20,7 @@ public class BackgammonGame {
 
         System.out.println("Welcome to Backgammon!");
         System.out.println("Initial board:");
+        BackgammonBoard.initialize();
         BackgammonBoard.display();
 
         boolean p1Turn = true;

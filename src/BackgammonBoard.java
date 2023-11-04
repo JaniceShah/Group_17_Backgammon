@@ -11,37 +11,67 @@ public class BackgammonBoard {
     private static List<List<Checkers>> checkersPosition= new ArrayList<>();
 
     public static void display() {
-        System.out.println("  24 23 22 21 20 19 18 |BAR| 17 16 15 14 13 12 11");
+        System.out.println("| 13 14 15 16 17 18 |BAR| 19 20 21 22 23 24 |");
         System.out.println("+-------------------+---+-------------------+");
+        int maxRow = 0;
+        for( int row = 12; row < 24; row++){
+            int rowSize = checkersPosition.get(row).size();
+            if(rowSize>maxRow){
+                maxRow = rowSize;
+            }
+        }
 
-        for (int row = 0; row < 5; row++) {
+        for (int row = 0; row < maxRow; row++) {
             System.out.print("| ");
-            for (int i = 0; i < 6; i++) {
-                System.out.print("X  ");
+            for (int i = 12; i < 18; i++) {
+                if(checkersPosition.get(i).size()-row>0){
+                    System.out.print(checkersPosition.get(i).get(row));
+                }else{
+                    System.out.print("   ");
+                }
             }
             System.out.print("|   | ");
-            for (int i = 0; i < 6; i++) {
-                System.out.print("O  ");
+            for (int i = 18; i < 24; i++) {
+                if(checkersPosition.get(i).size()-row>0){
+                    System.out.print(checkersPosition.get(i).get(row));
+                }else{
+                    System.out.print("   ");
+                }
             }
             System.out.println("|");
         }
 
-        System.out.println("|                   |BAR|                   |");
+        System.out.println("|-------------------|BAR|-------------------|");
 
-        for (int row = 0; row < 5; row++) {
+        for( int row = 0; row < 12; row++){
+            int rowSize = checkersPosition.get(row).size();
+            if(rowSize>maxRow){
+                maxRow = rowSize;
+            }
+        }
+
+        for (int row = maxRow-1; row >=0; row--) {
             System.out.print("| ");
-            for (int i = 0; i < 6; i++) {
-                System.out.print("O  ");
+            for (int i = 11; i > 5; i--) {
+                if(checkersPosition.get(i).size()-row>0){
+                    System.out.print(checkersPosition.get(i).get(row));
+                }else{
+                    System.out.print("   ");
+                }
             }
             System.out.print("|   | ");
-            for (int i = 0; i < 6; i++) {
-                System.out.print("X  ");
+            for (int i = 5; i >= 0; i--) {
+                if(checkersPosition.get(i).size()-row>0){
+                    System.out.print(checkersPosition.get(i).get(row));
+                }else{
+                    System.out.print("   ");
+                }
             }
             System.out.println("|");
         }
 
         System.out.println("+-------------------+---+-------------------+");
-        System.out.println("1  2  3  4  5  6  7 |BAR| 8  9 10 11 12 13 14");
+        System.out.println("| 12 11 10 09 08 07 |BAR| 06 05 04 03 02 01 |");
     }
 
     public static void initialize(){

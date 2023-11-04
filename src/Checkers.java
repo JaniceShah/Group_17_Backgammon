@@ -35,9 +35,9 @@ public class Checkers {
     @Override
     public String toString() {
         if(color== BackgammonBoard.colors.Black){
-            return "O";
+            return " O ";
         }else{
-            return "X";
+            return " X ";
         }
     }
 

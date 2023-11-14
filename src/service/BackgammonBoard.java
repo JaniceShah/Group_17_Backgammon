@@ -1,10 +1,14 @@
+package service;
+
+import dto.Checkers;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class BackgammonBoard {
 
-    public enum colors {Black, White};
+    public enum colors {Black, White}
 
     public static int positionsNumber = 24;
 
@@ -75,6 +79,9 @@ public class BackgammonBoard {
     }
 
     public static void initialize(){
+        System.out.println("Welcome to Backgammon!");
+        System.out.println("Initial board:");
+
         List<Integer> blackPositions = Arrays.asList(0, 11, 16, 18);
         List<Integer> whitePositions = Arrays.asList(23, 12, 7, 5);
         List<Integer> numberOfCheckers = Arrays.asList(2,5,3,5);
@@ -99,5 +106,34 @@ public class BackgammonBoard {
             }
             checkersPosition.add(checkersList);
         }
+    }
+
+    public static int determineFirstPlayer() {
+        System.out.println("Rolling one die for each player to determine which player \r\n" +
+                "goes first:\n");
+
+        int numPlayers = 2;
+        int[] diceResults = new int[numPlayers];
+
+        for (int player = 0; player < numPlayers; player++) {
+            diceResults[player] = Actions.rollDie();
+            System.out.println("Player " + (player + 1) + " rolled a " + diceResults[player]);
+            if(player==1 && diceResults[0]==diceResults[1]){
+                player=-1;
+                System.out.println("Since both players have got same dice number shuffling the dice again");
+            }
+        }
+
+        int maxRoll = 0;
+        int firstPlayer = 0;
+
+        for (int player = 0; player < diceResults.length; player++) {
+            if (diceResults[player] > maxRoll) {
+                maxRoll = diceResults[player];
+                firstPlayer = player;
+            }
+        }
+
+        return firstPlayer;
     }
 }

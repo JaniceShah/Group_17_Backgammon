@@ -6,12 +6,13 @@ public class BackgammonGame {
     private String p2name;
     private int p1score;
     private int p2score;
+    private static final int STARTING_PIP_COUNT = 167;
 
     public BackgammonGame(String p1name, String p2name) {
         this.p1name = p1name;
         this.p2name = p2name;
-        this.p1score = 0;
-        this.p2score = 0;
+        this.p1score = STARTING_PIP_COUNT;
+        this.p2score = STARTING_PIP_COUNT;
     }
 
     public void play() {
@@ -22,13 +23,27 @@ public class BackgammonGame {
         System.out.println("Initial board:");
         BackgammonBoard.initialize();
         BackgammonBoard.display();
+        System.out.println("Rolling one die for each player to determine which player \r\n" +
+                "goes first:\n");
 
-        boolean p1Turn = true;
+        int numPlayers = 2;
+        int[] diceResults = new int[numPlayers];
+
+      
+        for (int player = 0; player < numPlayers; player++) {
+            diceResults[player] = rollDie();
+            System.out.println("Player " + (player + 1) + " rolled a " + diceResults[player]);
+        }
+
+        int firstPlayer = determineFirstPlayer(diceResults);
+        System.out.println("Player " + (firstPlayer + 1) + " goes first!");
+
+        boolean p1Turn = (firstPlayer == 0); 
 
         while (true) {
-            p1score = 0;
-            p2score = 0;
-            System.out.print((p1Turn ? p1name : p2name) + ", enter 'roll' to roll the dice or 'quit' to exit: ");
+            System.out.println("Pip count - " + p1name + ": " + p1score + ", " + p2name + ": " + p2score);
+            System.out.println();
+            System.out.print((p1Turn ? p1name : p2name) + ", enter 'roll' to roll the dice, 'quit' to exit: ");
             String input = scanner.nextLine();
 
             if (input.equals("quit")) {
@@ -42,14 +57,18 @@ public class BackgammonGame {
 
                 System.out.println((p1Turn ? p1name : p2name) + " rolled a " + dice1 + " and a " + dice2);
 
+                int totalDice = dice1 + dice2;
+
                 if (p1Turn) {
-                    p1score += dice1 + dice2;
+                    p1score -= totalDice;
                 } else {
-                    p2score += dice1 + dice2;
+                    p2score -= totalDice;
                 }
 
-                System.out.println("Total of the dice: " + p1name + ": " + p1score + ", " + p2name + ": " + p2score);
-                p1Turn = !p1Turn; 
+                System.out.println("Total of the dice for " + (p1Turn ? p1name : p2name) + ": " + totalDice);
+                //System.out.println("Remaining pip count for " + (p1Turn ? p1name : p2name) + ": " + (p1Turn ? p1score : p2score));
+               
+                p1Turn = !p1Turn;
             }
         }
 
@@ -66,5 +85,24 @@ public class BackgammonGame {
 
         BackgammonGame game = new BackgammonGame(player1Name, player2Name);
         game.play();
+    }
+
+    private static int determineFirstPlayer(int[] diceResults) {
+        int maxRoll = 0;
+        int firstPlayer = 0;
+
+        for (int player = 0; player < diceResults.length; player++) {
+            if (diceResults[player] > maxRoll) {
+                maxRoll = diceResults[player];
+                firstPlayer = player;
+            }
+        }
+
+        return firstPlayer;
+    }
+
+    private static int rollDie() {
+        Random random = new Random();
+        return random.nextInt(6) + 1; 
     }
 }

@@ -27,9 +27,4 @@ public class Player {
         this.score = STARTING_PIP_COUNT;
     }
 
-    @Override
-    public String toString() {
-        return "name='" + name + '\'' +
-                ", score=" + score;
-    }
 }

@@ -23,8 +23,9 @@ public class BackgammonGame {
         boolean p1Turn = (firstPlayer == 0); 
 
         while (true) {
-            System.out.print((p1Turn ? player1.getName() : player2.getName())
-                    + ", enter '"+ roll + "'to roll the dice,'"+ quit + "'to exit: ");
+            System.out.println((p1Turn ? player1.getName() : player2.getName())
+                    + ", enter '"+ roll + "' to roll the dice,'"+ quit + "' to exit, "+ pip
+                    + " to show pip count, "+ hint + " to show all possible commands");
             String input = scanner.nextLine();
 
             if (input.equals(quit)) {
@@ -39,16 +40,17 @@ public class BackgammonGame {
                     break;
                 }
                 case "pip": {
-                    System.out.println("Pip number for both players are \n Player1: "+ player1
-                            + "\n Player2:"+ player2);
+                    System.out.println("Pip number for both players are "
+                            + player1.getName() + ":"+ player1.getScore() +" "
+                            + player2.getName() + ":"+ player2.getScore());
                     break;
                 }
                 case "hint": {
                     System.out.println("""
                             Following commands are allowed to be entered:\s
                             1. pip\s
-                             2. roll\s
-                             3. quit""");
+                            2. roll\s
+                            3. quit""");
                     break;
                 }
             }

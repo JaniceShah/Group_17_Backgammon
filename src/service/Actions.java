@@ -26,7 +26,8 @@ public class Actions {
 
         player.setScore(player.getScore() - totalDice);
 
-        System.out.println("Total of the dice for " + player + ": " + totalDice);
+        System.out.println("Total of the dice for " + player.getName() + ": " + totalDice
+                +"\npip count:"+ player.getScore());
 
     }
 }

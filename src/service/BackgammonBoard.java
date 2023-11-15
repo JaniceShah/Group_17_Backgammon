@@ -136,4 +136,9 @@ public class BackgammonBoard {
 
         return firstPlayer;
     }
+
+    public static void move(int position, int moveNumber){
+        Checkers shiftCheckers = checkersPosition.get(position-1).removeLast();
+        checkersPosition.get(position-moveNumber-1).add(shiftCheckers);
+    }
 }

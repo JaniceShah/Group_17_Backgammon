@@ -3,6 +3,7 @@ package service;
 import dto.Player;
 
 import java.util.Random;
+import java.util.Scanner;
 
 public class Actions {
 
@@ -23,11 +24,16 @@ public class Actions {
         System.out.println(player.getName() + " rolled a " + dice1 + " and a " + dice2);
 
         int totalDice = dice1 + dice2;
-
+        Scanner scanner = new Scanner(System.in);
+        String moveChecker = scanner.nextLine();
+        BackgammonBoard.move(24, dice1);
+        BackgammonBoard.display();
+        moveChecker = scanner.nextLine();
+        BackgammonBoard.move(24, dice2);
+        BackgammonBoard.display();
         player.setScore(player.getScore() - totalDice);
 
         System.out.println("Total of the dice for " + player.getName() + ": " + totalDice
                 +"\npip count:"+ player.getScore());
-
     }
 }

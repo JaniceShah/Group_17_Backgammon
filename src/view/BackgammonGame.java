@@ -33,17 +33,24 @@ public class BackgammonGame {
             }
 
             switch (input){
-                case "roll"-> {
+                case "roll": {
                     Actions.rollChance(p1Turn?player1:player2);
                     p1Turn = !p1Turn;
+                    break;
                 }
-                case "pip" -> System.out.println("Pip number for both players are \n Player1: "+ player1
+                case "pip": {
+                    System.out.println("Pip number for both players are \n Player1: "+ player1
                             + "\n Player2:"+ player2);
-                case "hint" -> System.out.println("""
-                        Following commands are allowed to be entered:\s
-                        1. pip\s
-                         2. roll\s
-                         3. quit""");
+                    break;
+                }
+                case "hint": {
+                    System.out.println("""
+                            Following commands are allowed to be entered:\s
+                            1. pip\s
+                             2. roll\s
+                             3. quit""");
+                    break;
+                }
             }
 
         }

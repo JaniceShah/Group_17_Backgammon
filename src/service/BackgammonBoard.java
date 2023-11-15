@@ -1,13 +1,16 @@
 package service;
 
 import dto.Checkers;
+import dto.Move;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 public class BackgammonBoard {
 
+    private static Scanner scanner = new Scanner(System.in);
     public enum colors {Black, White}
 
     public static int positionsNumber = 24;
@@ -138,7 +141,98 @@ public class BackgammonBoard {
     }
 
     public static void move(int position, int moveNumber){
-        Checkers shiftCheckers = checkersPosition.get(position-1).removeLast();
+        Checkers shiftCheckers = checkersPosition.get(position-1).remove(0);
         checkersPosition.get(position-moveNumber-1).add(shiftCheckers);
     }
+
+
+    public static void options(int dice1, int dice2, Boolean p1turn) {
+        int player = p1turn ? 1 : -1;
+
+        List<Move> legalMoves = getLegalMoves(dice1, dice2, player);
+
+        System.out.println("Legal Moves for Player " + (p1turn ? 1 : 2) + " after rolling " + dice1 + " and " + dice2 + ":");
+        for (int i = 0; i < legalMoves.size(); i++) {
+            System.out.println((char) ('A' + i) + ": " + legalMoves.get(i).toString());
+        }
+
+     
+        System.out.print("Enter the letter code for the desired move (e.g., 'A'): ");
+        char userInput = scanner.next().toUpperCase().charAt(0);
+
+      
+        if (userInput >= 'A' && userInput < 'A' + legalMoves.size()) {
+            Move selectedMove = legalMoves.get(userInput - 'A');
+            applyMove(selectedMove);
+        } else {
+            System.out.println("Invalid move. Please enter a valid letter code.");
+        }
+    }
+
+    public static List<Move> getLegalMoves(int dice1, int dice2, int player) {
+        List<Move> legalMoves = new ArrayList<>();
+
+   
+        for (int source = 0; source < positionsNumber; source++) {
+            if (checkersPosition.get(source).isEmpty() || getColorPlayer(checkersPosition.get(source).get(0).getColor()) != player) {
+                continue; 
+            }
+
+           
+            int destination1 = source + (player == 1 ? dice1 : -dice1);
+            int destination2 = source + (player == 1 ? dice2 : -dice2);
+
+            if (isValidMove(source, destination1)) {
+                legalMoves.add(new Move(source, destination1));
+            }
+
+            if (isValidMove(source, destination2) && destination2 != destination1) {
+                legalMoves.add(new Move(source, destination2));
+            }
+        }
+
+        return legalMoves;
+    }
+
+    public static void applyMove(Move move) {
+        int source = move.source;
+        int destination = move.destination;
+
+        Checkers shiftedChecker = checkersPosition.get(source).remove(0);
+        checkersPosition.get(destination).add(shiftedChecker);
+    }
+    public static int getColorPlayer(colors color) {
+        return color == colors.Black ? 1 : -1;
+    }
+    
+    public static boolean isValidMove(int source, int destination) {
+      
+        if (source < 0 || source >= positionsNumber || destination < 0 || destination >= positionsNumber) {
+            return false;
+        }
+    
+       
+        if (checkersPosition.get(source).isEmpty()) {
+            return false;
+        }
+    
+   
+        colors sourceColor = checkersPosition.get(source).get(0).getColor();
+        if (!checkersPosition.get(destination).isEmpty() && checkersPosition.get(destination).get(0).getColor() != sourceColor) {
+            return false;
+        }
+    
+        
+        int moveDirection = destination - source;
+        int player = getColorPlayer(sourceColor);
+        if (player == 1 && moveDirection <= 0) {
+            return false; 
+        } else if (player == -1 && moveDirection >= 0) {
+            return false; 
+        }
+    
+        return true;
+    }
+    
+    
 }

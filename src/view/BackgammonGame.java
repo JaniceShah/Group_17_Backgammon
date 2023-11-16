@@ -60,14 +60,13 @@ public class BackgammonGame {
                     System.out.println("Invalid command. Please enter a valid command.");
                     break;
                 }
-            }
-
-        }
+            }    
         
-        if (BackgammonBoard.isGameOver()) {
-            System.out.println("Game over! Player " + (BackgammonBoard.isGameOver() ? 1 : 2) + " wins!");
+            if (BackgammonBoard.isGameOver()) {
+                System.out.println("Game over! Player " + (BackgammonBoard.isGameOver() ? 1 : 2) + " wins!");
+                break;
+            }
         }
-
     }
 
     public static void main(String[] args) {

@@ -19,7 +19,8 @@ public class BackgammonBoard {
 
     private static List<Checkers> whiteOutCheckers = new ArrayList<>();
     private static List<Checkers> blackOutCheckers = new ArrayList<>();
-
+    private static List<Checkers> movedOutWhiteCheckers = new ArrayList<>();
+    private static List<Checkers> movedOutBlackCheckers = new ArrayList<>();
     private static List<Checkers> movedOutCheckers = new ArrayList<>();
 
     private static List<List<Checkers>> checkersPosition= new ArrayList<>();
@@ -284,10 +285,10 @@ public class BackgammonBoard {
 
         //checkers to the movedOutCheckers list
         if (source == -1) {
-            if (move.destination < 12) {
-                movedOutCheckers.add(blackOutCheckers.remove(0));
+            if (move.destination > 12) {
+                movedOutBlackCheckers.add(checkersPosition.get(source).remove(0));
             } else {
-                movedOutCheckers.add(whiteOutCheckers.remove(0));
+                movedOutWhiteCheckers.add(checkersPosition.get(source).remove(0));
             }
             return;
         }
@@ -370,7 +371,7 @@ public class BackgammonBoard {
 // }
 
 public static boolean isGameOver() {
-    return (whiteOutCheckers.size() + blackOutCheckers.size() == 15);
+    return (movedOutBlackCheckers.size() ==15 || movedOutWhiteCheckers.size() == 15 );
 }
 
 public static int determineWinner() {

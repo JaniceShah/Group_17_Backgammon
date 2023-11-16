@@ -53,7 +53,7 @@ public class BackgammonGame {
                 case "hint": {
                     System.out.println("Following commands are allowed to be entered:\n1. pip \n" + //
                             "2. roll \n" + //
-                                    "3. quit");
+                            "3. quit");
                     break;
                 }
                 default: {
@@ -62,6 +62,10 @@ public class BackgammonGame {
                 }
             }
 
+        }
+        
+        if (BackgammonBoard.isGameOver()) {
+            System.out.println("Game over! Player " + (BackgammonBoard.isGameOver() ? 1 : 2) + " wins!");
         }
 
     }

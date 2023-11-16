@@ -20,6 +20,8 @@ public class BackgammonBoard {
     private static List<Checkers> whiteOutCheckers = new ArrayList<>();
     private static List<Checkers> blackOutCheckers = new ArrayList<>();
 
+    private static List<Checkers> movedOutCheckers = new ArrayList<>();
+
     private static List<List<Checkers>> checkersPosition= new ArrayList<>();
 
     public static void display() {
@@ -90,6 +92,11 @@ public class BackgammonBoard {
         }
         if(!blackOutCheckers.isEmpty()){
             System.out.println("The number of black checkers outside board are:"+ blackOutCheckers);
+        }
+
+        if (isGameOver()) {
+            int winner = determineWinner();
+            System.out.println("Game over! Player " + winner + " wins!");
         }
     }
 
@@ -274,6 +281,16 @@ public class BackgammonBoard {
 
         Checkers shiftedChecker = checkersPosition.get(source).remove(0);
         checkersPosition.get(destination).add(shiftedChecker);
+
+        //checkers to the movedOutCheckers list
+        if (source == -1) {
+            if (move.destination < 12) {
+                movedOutCheckers.add(blackOutCheckers.remove(0));
+            } else {
+                movedOutCheckers.add(whiteOutCheckers.remove(0));
+            }
+            return;
+        }
     }
 
     public static int getColorPlayer(colors color) {
@@ -345,4 +362,20 @@ public class BackgammonBoard {
 
     }
     
+//     //Game is over when all the checkers of one colour move out of the board into a list
+//     public static boolean isGameOver(int player) {
+//         List<Checkers> outCheckers = (player == 1) ? whiteOutCheckers : blackOutCheckers;
+//         return outCheckers.size() == 15; 
+
+// }
+
+public static boolean isGameOver() {
+    return (whiteOutCheckers.size() + blackOutCheckers.size() == 15);
+}
+
+public static int determineWinner() {
+    return (whiteOutCheckers.size() == 15) ? 1 : 2;
+}
+
+
 }

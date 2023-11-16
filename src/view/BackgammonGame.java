@@ -40,6 +40,7 @@ public class BackgammonGame {
                     int dice1 = Actions.rollDie();
                     int dice2 = Actions.rollDie();
                     BackgammonBoard.options(dice1, dice2, p1Turn);
+                    Actions.rollChance(p1Turn ? player1 : player2);
                     p1Turn = !p1Turn;
                     break;
                 }
@@ -50,8 +51,8 @@ public class BackgammonGame {
                     break;
                 }
                 case "hint": {
-                    System.out.println("Following commands are allowed to be entered:\n 1. pip \\n" + //
-                            "2. roll \\n" + //
+                    System.out.println("Following commands are allowed to be entered:\n1. pip \n" + //
+                            "2. roll \n" + //
                                     "3. quit");
                     break;
                 }

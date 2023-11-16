@@ -166,26 +166,27 @@ public class BackgammonBoard {
         }else{
             totalPlacesToMove = dice1*4;
         }
+        int checkNextTurn = p1turn ? 1: 0;
 
         while(totalPlacesToMove>0) {
             List<Move> legalMoves = new ArrayList<>();
 
-            if(!whiteOutCheckers.isEmpty()){
+            if(!whiteOutCheckers.isEmpty() && checkNextTurn ==0){
                 legalMoves = optionOutBoard(dice1, dice2, player, whiteOutCheckers);
-                System.out.println(legalMoves);
-            } else if (!blackOutCheckers.isEmpty()) {
+            } else if (!blackOutCheckers.isEmpty() && checkNextTurn ==1) {
                 legalMoves = optionOutBoard(dice1, dice2, player, blackOutCheckers);
-                System.out.println(legalMoves);
             } else {
                 legalMoves = getLegalMoves(dice1, dice2, player);
+                checkNextTurn = 2;
             }
 
+            String printRolls = dice1==0? Integer.toString(dice2): dice2==0? Integer.toString(dice1)
+                    : dice1 + " and " + dice2 + ":";
             if(legalMoves.isEmpty()){
+                System.out.println("Legal Moves for Player " + (p1turn ? 1 : 2) + " after rolling "+ printRolls);
                 System.out.println("No moves available");
                 break;
             }
-            String printRolls = dice1==0? Integer.toString(dice2): dice2==0? Integer.toString(dice1)
-                    : dice1 + " and " + dice2 + ":";
             System.out.println("Legal Moves for Player " + (p1turn ? 1 : 2) + " after rolling "+ printRolls);
             for (int i = 0; i < legalMoves.size(); i++) {
                 System.out.println((char) ('A' + i) + ": " + legalMoves.get(i).toString());
@@ -197,7 +198,11 @@ public class BackgammonBoard {
             if (userInput >= 'A' && userInput < 'A' + legalMoves.size()) {
                 Move selectedMove = legalMoves.get(userInput - 'A');
                 applyMove(selectedMove);
-                int sourcePos = Math.max(selectedMove.source, 0);
+                int sourcePos = selectedMove.source;
+                // For white checker outside the board
+                if(abs(sourcePos-selectedMove.destination)>12){
+                    sourcePos = 24;
+                }
                 int numberOfMoveMade =abs(sourcePos-selectedMove.destination);
                 totalPlacesToMove-=numberOfMoveMade;
                 if(dice1==numberOfMoveMade && totalPlacesToMove==dice2){
@@ -238,15 +243,15 @@ public class BackgammonBoard {
     public static void applyMove(Move move) {
         int source = move.source;
         int destination = move.destination;
+        colors sourceColor;
         if(source==-1 && move.destination<12){
-            checkersPosition.get(destination).add(whiteOutCheckers.remove(0));
-            return;
+            sourceColor = colors.Black;
         }else if(source==-1 && move.destination>12){
-            checkersPosition.get(destination).add(blackOutCheckers.remove(0));
-            return;
+            sourceColor = colors.White;
+        }else{
+            sourceColor = checkersPosition.get(source).get(0).getColor();
         }
 
-        colors sourceColor = checkersPosition.get(source).get(0).getColor();
         List<Checkers> destinationList = checkersPosition.get(destination);
         if (!destinationList.isEmpty() &&
                 destinationList.get(0).getColor() != sourceColor &&
@@ -256,6 +261,15 @@ public class BackgammonBoard {
             }else{
                 whiteOutCheckers.add(destinationList.remove(0));
             }
+        }
+
+        if(source==-1){
+            if(move.destination<12){
+                checkersPosition.get(destination).add(blackOutCheckers.remove(0));
+            }else{
+                checkersPosition.get(destination).add(whiteOutCheckers.remove(0));
+            }
+            return;
         }
 
         Checkers shiftedChecker = checkersPosition.get(source).remove(0);
@@ -317,8 +331,8 @@ public class BackgammonBoard {
         // If player == 1 then it is white otherwise here, assigned -1 to it otherwise black which is -2
         int source = -1;
 
-        int destination1 = (checkersList.get(0).getColor()==colors.White ? positionsNumber-dice1-1: dice1-1 );
-        int destination2 = (checkersList.get(0).getColor()==colors.White ? positionsNumber-dice2-1: dice2-1 );
+        int destination1 = (checkersList.get(0).getColor()==colors.White ? positionsNumber-dice1: dice1-1 );
+        int destination2 = (checkersList.get(0).getColor()==colors.White ? positionsNumber-dice2: dice2-1 );
 
         if (source!=destination1 && isValidOutCheckerMove(destination1, checkersList)) {
             legalMoves.add(new Move(source, destination1));

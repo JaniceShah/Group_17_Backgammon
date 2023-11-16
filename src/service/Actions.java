@@ -25,11 +25,6 @@ public class Actions {
 
         int totalDice = dice1 + dice2;
         Scanner scanner = new Scanner(System.in);
-        String moveChecker = scanner.nextLine();
-        BackgammonBoard.move(24, dice1);
-        BackgammonBoard.display();
-        moveChecker = scanner.nextLine();
-        BackgammonBoard.move(24, dice2);
         BackgammonBoard.display();
         player.setScore(player.getScore() - totalDice);
 

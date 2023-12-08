@@ -6,7 +6,7 @@ public class Player {
 
     private String name;
     private int score;
-
+    private int matchScore; // Added matchScore field
 
     public String getName() {
         return name;
@@ -24,8 +24,18 @@ public class Player {
         this.score = score;
     }
 
-    public Player() {
-        this.score = STARTING_PIP_COUNT;
+    
+    public void incrementMatchScore() {
+        this.matchScore++;
     }
 
+   
+    public int getMatchScore() {
+        return matchScore;
+    }
+
+    public Player() {
+        this.score = STARTING_PIP_COUNT;
+        this.matchScore = 0; 
+}
 }

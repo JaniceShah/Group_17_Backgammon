@@ -12,6 +12,9 @@ public class Actions {
     public static String quit = "quit";
     public static String hint = "hint";
     public static String pip = "pip";
+    public static String double_cube = "double_cube";
+    public static String accept = "accept";
+    public static String refuse = "refuse";
 
     public static int rollDie() {
         Random random = new Random();

@@ -2,6 +2,7 @@ package service;
 
 import dto.Checkers;
 import dto.Move;
+import dto.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,7 +15,10 @@ public class BackgammonBoard {
 
     private static Scanner scanner = new Scanner(System.in);
     public enum colors {Black, White}
-
+   private static int doublingCubePosition = 1;
+    private static boolean doubleOffered = false;
+    private static Player offeringPlayer = null;
+    private static Player receivingPlayer = null;
     public static int positionsNumber = 24;
 
     private static List<Checkers> whiteOutCheckers = new ArrayList<>();
@@ -378,5 +382,35 @@ public static int determineWinner() {
     return (whiteOutCheckers.size() == 15) ? 1 : 2;
 }
 
+public static boolean isDoubleOffered() {
+    return doubleOffered;
+}
+
+public static void displayDoublingCube() {
+    System.out.println("Doubling Cube: Position " + doublingCubePosition +
+            (doubleOffered ? (" Offered by: " + offeringPlayer.getName()) : ""));
+}
+
+public static void doubleOffer(Player offeringPlayer, Player receivingPlayer) {
+    doubleOffered = true;
+    BackgammonBoard.offeringPlayer = offeringPlayer;
+    BackgammonBoard.receivingPlayer = receivingPlayer;
+    System.out.println(offeringPlayer.getName() + " offers a double to " + receivingPlayer.getName() + ".");
+}
+
+public static void acceptDouble() {
+    doubleOffered = false;
+    doublingCubePosition *= 2; // Double the current position
+    int currentStake = (int) Math.pow(2, doublingCubePosition - 1); // 2^(position-1) for the current stake
+    System.out.println(receivingPlayer.getName() + " accepts the double. The stake is now " + currentStake + ".");
+}
+
+public static void refuseDouble() {
+    doubleOffered = false;
+    int currentStake = 1 << (doublingCubePosition - 1); // 2^(position-1)
+    System.out.println(receivingPlayer.getName() + " refuses the double. " +
+            offeringPlayer.getName() + " wins the current stake.");
+    offeringPlayer.incrementMatchScore();
+}
 
 }

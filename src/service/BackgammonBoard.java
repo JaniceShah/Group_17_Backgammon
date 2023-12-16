@@ -4,10 +4,7 @@ import dto.Checkers;
 import dto.Move;
 import dto.Player;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 import static java.lang.Math.abs;
 
@@ -121,6 +118,18 @@ public class BackgammonBoard {
         List<Integer> blackPositions = Arrays.asList(10, 11, 16, 18);
         List<Integer> whitePositions = Arrays.asList(0, 1, 2, 3);
         List<Integer> numberOfCheckers = Arrays.asList(2,5,3,5);
+        whiteOutCheckers = new ArrayList<>();
+        checkersPosition= new ArrayList<>();
+        blackOutCheckers = Collections.EMPTY_LIST;
+        whiteCheckersTimeOut = Collections.EMPTY_LIST;
+        blackCheckersTimeOut = Collections.EMPTY_LIST;
+        doublingCubePosition = 1;
+        doubleOffered = false;
+        offeringPlayer = null;
+        receivingPlayer = null;
+        whiteEnd = true;
+        blackEnd = false;
+
         int blackCheckers = 0;
         int whiteCheckers = 0;
         for(int i=0;i<positionsNumber;i++){
@@ -144,42 +153,7 @@ public class BackgammonBoard {
         }
     }
 
-    public static int determineFirstPlayer() {
-        System.out.println("Rolling one die for each player to determine which player \r\n" +
-                "goes first:\n");
-
-        int numPlayers = 2;
-        int[] diceResults = new int[numPlayers];
-
-        for (int player = 0; player < numPlayers; player++) {
-            diceResults[player] = Actions.rollDie();
-            System.out.println("Player " + (player + 1) + " rolled a " + diceResults[player]);
-            if(player==1 && diceResults[0]==diceResults[1]){
-                player=-1;
-                System.out.println("Since both players have got same dice number shuffling the dice again");
-            }
-        }
-
-        int maxRoll = 0;
-        int firstPlayer = 0;
-
-        for (int player = 0; player < diceResults.length; player++) {
-            if (diceResults[player] > maxRoll) {
-                maxRoll = diceResults[player];
-                firstPlayer = player;
-            }
-        }
-
-        return firstPlayer;
-    }
-
-    public static void move(int position, int moveNumber){
-        Checkers shiftCheckers = checkersPosition.get(position-1).remove(0);
-        checkersPosition.get(position-moveNumber-1).add(shiftCheckers);
-    }
-
-
-    public static void options(int dice1, int dice2, Boolean p1turn) {
+    public static void options(int dice1, int dice2, Boolean p1turn, Player playerRolling) {
         int player = p1turn ? 1 : -1;
         int totalPlacesToMove = 0;
         if(dice2!=dice1){
@@ -201,6 +175,11 @@ public class BackgammonBoard {
                 legalMoves = getLegalEndGameMoves(dice1, dice2, player, 0);
                 if(legalMoves.isEmpty())
                     legalMoves = getLegalEndGameMoves(dice1, dice2, player, 1);
+                if(legalMoves.isEmpty()) {
+                    legalMoves = getLegalMoves(dice1, dice2, player);
+                    checkIfEndGame = 0;
+                }
+
             } else {
                 legalMoves = getLegalMoves(dice1, dice2, player);
                 checkNextTurn = 2;
@@ -223,10 +202,11 @@ public class BackgammonBoard {
 
             if (userInput >= 'A' && userInput < 'A' + legalMoves.size()) {
                 Move selectedMove = legalMoves.get(userInput - 'A');
+                System.out.println(checkIfEndGame + " AAAA ");
                 if(checkIfEndGame==1){
                     applyEndMoves(selectedMove);
                     int diceUsed = abs(selectedMove.source-selectedMove.destination);
-                    System.out.println(diceUsed);
+                    Actions.calculatePipCount(diceUsed, playerRolling);
                     if(diceUsed==dice1){
                         totalPlacesToMove -= dice1;
                         if (totalPlacesToMove == dice2) {
@@ -239,7 +219,6 @@ public class BackgammonBoard {
                             dice2 = 0;
                         }
                     } else {
-                        System.out.println(dice1 + " "+ dice2);
                         if(diceUsed<dice1 && ((dice1!=0 && dice2!=0  && dice1<dice2) || (dice2==0 && dice1!=0))){
                             totalPlacesToMove -= dice1;
                             if (totalPlacesToMove == dice2) {
@@ -257,18 +236,21 @@ public class BackgammonBoard {
                     applyMove(selectedMove);
                     int sourcePos = selectedMove.source;
                     // For white checker outside the board
-                    if (abs(sourcePos - selectedMove.destination) > 12) {
+                    int numberOfMoveMade = abs(sourcePos - selectedMove.destination);
+                    if (numberOfMoveMade > 12) {
                         sourcePos = 24;
                     }
-                    int numberOfMoveMade = abs(sourcePos - selectedMove.destination);
                     totalPlacesToMove -= numberOfMoveMade;
+                    Actions.calculatePipCount(totalPlacesToMove, playerRolling);
                     if (dice1 == numberOfMoveMade && totalPlacesToMove == dice2) {
                         dice1 = 0;
                     } else if (dice2 == numberOfMoveMade && totalPlacesToMove == dice1) {
                         dice2 = 0;
                     }
                 }
+                Actions.getPipCount(playerRolling);
                 display();
+
             } else {
                 System.out.println("Invalid move. Please enter a valid letter code.");
             }
@@ -299,6 +281,7 @@ public class BackgammonBoard {
     public static void applyMove(Move move) {
         int source = move.source;
         int destination = move.destination;
+        // Total moves to calculate the pip number
         colors sourceColor;
         if(source==-1 && move.destination<12){
             sourceColor = colors.Black;
@@ -344,6 +327,7 @@ public class BackgammonBoard {
     public static void applyEndMoves(Move move){
         colors color = move.destination==24? colors.Black: colors.White;
         Checkers removedChecker = checkersPosition.get(move.source).removeLast();
+        System.out.println(removedChecker);
         if(color==colors.White){
             whiteOutCheckers.add(removedChecker);
         }else{
@@ -419,13 +403,6 @@ public class BackgammonBoard {
         return legalMoves;
 
     }
-    
-//     //Game is over when all the checkers of one colour move out of the board into a list
-//     public static boolean isGameOver(int player) {
-//         List<Checkers> outCheckers = (player == 1) ? whiteOutCheckers : blackOutCheckers;
-//         return outCheckers.size() == 15; 
-
-// }
 
     public static boolean isGameOver() {
         return (whiteOutCheckers.size() ==15 || blackOutCheckers.size() == 15 );
@@ -466,25 +443,6 @@ public class BackgammonBoard {
         offeringPlayer.incrementMatchScore();
     }
 
-    public static void checkIfEnd(colors color) {
-        int count = 0;
-        if(color==colors.Black){
-            for(int i=18;i<24;i++){
-                count+=checkersPosition.get(i).size();
-            }
-        }else {
-            for(int i=0;i<6;i++){
-                count+=checkersPosition.get(i).size();
-            }
-        }
-        if(count==15){
-            if(color==colors.Black)
-                blackEnd = true;
-            else
-                whiteEnd = true;
-        }
-    }
-
     public static List<Move> getLegalEndGameMoves(int dice1, int dice2, int player, int moreMoves) {
         List<Move> legalMoves = new ArrayList<>();
         int finalPos = 0;
@@ -512,8 +470,6 @@ public class BackgammonBoard {
             } else{
                 if(((dice1!=0 && abs(finalPos - source)<dice1) || (dice2!= 0 && abs(finalPos - source)<dice2))){
                     legalMoves.add(new Move(source, finalPos));
-//                    dice1 = abs(finalPos - source)<dice1?0:dice1;
-//                    dice2 = (abs(finalPos - source)<dice2  && dice1!=0) ?0:dice2;
                 }
             }
         }

@@ -20,24 +20,13 @@ public class Actions {
         Random random = new Random();
         return random.nextInt(6) + 1;
     }
-    public static void rollChance(Player player){
-        int dice1 = rollDie();
-        int dice2 = rollDie();
 
-        System.out.println(player.getName() + " rolled a " + dice1 + " and a " + dice2);
-
-        int totalDice = dice1 + dice2;
-        Scanner scanner = new Scanner(System.in);
-        BackgammonBoard.display();
+    public static void calculatePipCount(int totalDice, Player player){
         player.setScore(player.getScore() - totalDice);
-
-        System.out.println("Total of the dice for " + player.getName() + ": " + totalDice
-                +"\npip count:"+ player.getScore());
     }
 
-    public static void pipCount(Player player){
+    public static void getPipCount(Player player){
         System.out.println("Pip number for " + player.getName() + ":" + player.getScore());
-
     }
 
     public static int determineFirstPlayer() {

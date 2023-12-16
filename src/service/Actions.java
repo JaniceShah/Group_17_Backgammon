@@ -34,6 +34,12 @@ public class Actions {
         System.out.println("Total of the dice for " + player.getName() + ": " + totalDice
                 +"\npip count:"+ player.getScore());
     }
+
+    public static void pipCount(Player player){
+        System.out.println("Pip number for " + player.getName() + ":" + player.getScore());
+
+    }
+
     public static int determineFirstPlayer() {
         System.out.println("Rolling one die for each player to determine which player \r\n" +
                 "goes first:\n");

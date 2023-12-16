@@ -181,7 +181,6 @@ public class BackgammonBoard {
 
     public static void options(int dice1, int dice2, Boolean p1turn) {
         int player = p1turn ? 1 : -1;
-        System.out.println(whiteEnd + " P1Turn" + p1turn);
         int totalPlacesToMove = 0;
         if(dice2!=dice1){
             totalPlacesToMove = dice1+dice2;

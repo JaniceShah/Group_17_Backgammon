@@ -28,15 +28,17 @@ public class BackgammonGame {
             System.out.println("Player " + (firstPlayer + 1) + " goes first!");
 
             boolean p1Turn = (firstPlayer == 0);
+            // In case user refuses to take double
+            boolean refusedDoubleCheck= false;
 
             while (true) {
                 System.out.println((p1Turn ? player1.getName() : player2.getName())
-                        + ", enter '" + roll + "' to roll the dice, '" + quit + "' to exit, '" + pip
-                        + "' to show pip count, '" + hint + "' to show all possible commands '" + double_cube + "' to offers a double to the other player '" + accept + "' to continue the game for twice the stake '" 
-                        + refuse + "' to reject the double offer '"  );
+                        + ", enter \n'" + roll + "' to roll the dice, \n'" + quit + "' to exit, \n'" + pip
+                        + "' to show pip count, \n'" + hint + "' to show all possible commands \n'" + double_cube + "' offers a double to the other player \n \t'" + accept + "' to continue the game for twice the stake \n \t'"
+                        + refuse + "' to reject the double offer"  );
                 String input = scanner.nextLine();
 
-                if (input.equals(quit)) {
+                if (refusedDoubleCheck && input.equals(quit)) {
                     System.out.println("Game over!");
                     break;
                 }
@@ -46,7 +48,7 @@ public class BackgammonGame {
                         int dice1 = Actions.rollDie();
                         int dice2 = Actions.rollDie();
                         BackgammonBoard.options(dice1, dice2, p1Turn);
-                        Actions.rollChance(p1Turn ? player1 : player2);
+                        Actions.pipCount(p1Turn ? player1 : player2);
                         p1Turn = !p1Turn;
                         break;
                     }
@@ -57,15 +59,16 @@ public class BackgammonGame {
                         break;
                     }
                     case "hint": {
-                        System.out.println("Following commands are allowed to be entered:\n1. pip \n" +
-                                "2. roll \n" +
-                                "3. quit \n" +
-                                "4. double");
+                        System.out.println("Following commands are allowed to be entered:\n1." + pip +
+                                "\n 2." + roll +
+                                "\n 3." + quit +
+                                "\n 4." + double_cube);
                         break;
                     }
                     case "double_cube": {
                         if (!BackgammonBoard.isDoubleOffered()) {
                             BackgammonBoard.doubleOffer(p1Turn ? player1 : player2, p1Turn ? player2 : player1);
+                            refusedDoubleCheck = true;
                         } else {
                             System.out.println("A double is already offered. You can accept or refuse.");
                         }
@@ -82,6 +85,7 @@ public class BackgammonGame {
                     case "refuse": {
                         if (BackgammonBoard.isDoubleOffered()) {
                             BackgammonBoard.refuseDouble();
+
                         } else {
                             System.out.println("No double is currently offered.");
                         }
@@ -105,6 +109,8 @@ public class BackgammonGame {
             System.out.println("Match Score: " + player1.getName() + " " + player1.getMatchScore() +
                     " - " + player2.getName() + " " + player2.getMatchScore());
         }
+
+        System.out.println(" Match Over! Winner of the match is: "+ (player1.getMatchScore()>player2.getMatchScore()?"Player1":"Player2"));
     }
 
     private static void updateMatchScore(int winner) {

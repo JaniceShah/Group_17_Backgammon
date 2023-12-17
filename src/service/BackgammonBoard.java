@@ -17,6 +17,7 @@ public class BackgammonBoard {
     private static Player offeringPlayer = null;
     private static Player receivingPlayer = null;
     public static int positionsNumber = 24;
+    private static int matchLength;
 
     private static List<Checkers> whiteOutCheckers = new ArrayList<>();
     private static List<Checkers> blackOutCheckers = new ArrayList<>();
@@ -28,7 +29,11 @@ public class BackgammonBoard {
 
     private static List<List<Checkers>> checkersPosition= new ArrayList<>();
 
+    public static void setMatchLength(int length) {
+        matchLength = length;
+    }
     public static void display() {
+        
         System.out.println("| 13 14 15 16 17 18 |BAR| 19 20 21 22 23 24 |");
         System.out.println("+-------------------+---+-------------------+");
         int maxRow = 0;
@@ -113,6 +118,7 @@ public class BackgammonBoard {
 
     public static void initialize(){
         System.out.println("Welcome to Backgammon!");
+        System.out.println("Match Length: " + matchLength + " games");
         System.out.println("Initial board:");
 
         List<Integer> blackPositions = Arrays.asList(10, 11, 16, 18);
@@ -326,7 +332,7 @@ public class BackgammonBoard {
     }
     public static void applyEndMoves(Move move){
         colors color = move.destination==24? colors.Black: colors.White;
-        Checkers removedChecker = checkersPosition.get(move.source).removeLast();
+        Checkers removedChecker = checkersPosition.get(move.source).remove(0);
         System.out.println(removedChecker);
         if(color==colors.White){
             whiteOutCheckers.add(removedChecker);

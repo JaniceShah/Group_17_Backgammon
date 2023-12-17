@@ -15,10 +15,21 @@ public class Actions {
     public static String double_cube = "double_cube";
     public static String accept = "accept";
     public static String refuse = "refuse";
+    private static int customDice1;
+    private static int customDice2;
 
     public static int rollDie() {
         Random random = new Random();
+        if (customDice1 != 0 && customDice2 != 0) {
+            int temp = customDice1;
+            customDice1 = 0;
+            return temp;
+        }
         return random.nextInt(6) + 1;
+    }
+     public static void setCustomDiceValues(int value1, int value2) {
+        customDice1 = value1;
+        customDice2 = value2;
     }
 
     public static void calculatePipCount(int totalDice, Player player){
@@ -57,6 +68,9 @@ public class Actions {
 
         return firstPlayer;
     }
+    public static void pipCount(Object object) {
+    }
+   
 
 }
 

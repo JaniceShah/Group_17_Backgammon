@@ -37,14 +37,39 @@ public class BackgammonGame {
                 }
 
                 System.out.println((p1Turn ? player1.getName() : player2.getName())
-                        + ", enter \n'" + roll + "' to roll the dice, \n'" + quit + "' to exit, \n'" + pip
-                        + "' to show pip count, \n'" + hint + "' to show all possible commands \n'" + double_cube + "' offers a double to the other player \n \t'" + accept + "' to continue the game for twice the stake \n \t'"
-                        + refuse + "' to reject the double offer"  );
+        + ", enter \n'" + roll + "' to roll the dice, \n'" + quit + "' to exit, \n'" + "dice <int> <int>' to set customized dice values \n'"+ pip
+        + "' to show pip count, \n'" + hint + "' to show all possible commands \n'" + double_cube + "' offers a double to the other player \n \t'" + accept + "' to continue the game for twice the stake \n \t'"
+        + refuse + "' to reject the double offer" );
                 String input = scanner.nextLine();
+
                 if (input.equals(refuse) || input.equals(quit)) {
                     System.out.println("Game over!");
                     break;
                 }
+                if (input.startsWith("dice")) {
+                    String[] diceValues = input.split("\\s+");
+                    if (diceValues.length == 3) {
+                try {
+                int customDice1 = Integer.parseInt(diceValues[1]);
+                int customDice2 = Integer.parseInt(diceValues[2]);
+
+                // Set the custom dice values
+                Actions.setCustomDiceValues(customDice1, customDice2);
+
+                // Inform the user about the custom dice values
+                System.out.println("Custom dice values set: " + customDice1 + " " + customDice2);
+
+                // Continue with the turn
+                BackgammonBoard.options(customDice1, customDice2, p1Turn, player1);
+                Actions.pipCount(p1Turn ? player1 : player2);
+                p1Turn = !p1Turn;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid dice values. Please enter valid integers.");
+            }
+        } else {
+            System.out.println("Invalid command. Please use the format 'dice <int> <int>'.");
+        }
+    } else {
 
                 switch (input) {
                     case "roll": {
@@ -98,12 +123,17 @@ public class BackgammonGame {
                     }
                 }
             }
-
-            System.out.println("Match Score: " + player1.getName() + " " + player1.getMatchScore() +
-                    " - " + player2.getName() + " " + player2.getMatchScore());
         }
 
-        System.out.println(" Match Over! Winner of the match is: "+ (player1.getMatchScore()>player2.getMatchScore()?"Player1":"Player2"));
+            System.out.println("Match Score: " + player1.getName() + ": " + player1.getMatchScore() +
+                    " - " + player2.getName() + ": " + player2.getMatchScore());
+        }
+
+        System.out.println("Match Over! " + 
+        (player1.getMatchScore() > player2.getMatchScore() ? "Winner of the match is: Player1" :
+         (player2.getMatchScore() > player1.getMatchScore() ? "Winner of the match is: Player2" : "No winner")));
+
+         
     }
 
     private static void updateMatchScore(int winner) {
@@ -127,6 +157,7 @@ public class BackgammonGame {
 
         player1.setName(player1Name);
         player2.setName(player2Name);
+        BackgammonBoard.setMatchLength(matchLength);
         play();
         scanner.close();
     }

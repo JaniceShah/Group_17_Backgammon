@@ -4,11 +4,11 @@ import dto.Player;
 
 public class MatchActions {
 
-    private static int doublingCubePosition = 1;
-    private static int currentStakes = 1;
+    public static int doublingCubePosition = 1;
+    public static int currentStakes = 1;
     private static boolean doubleOffered = false;
-    private static Player offeringPlayer = null;
-    private static Player receivingPlayer = null;
+    public static Player offeringPlayer = null;
+    public static Player receivingPlayer = null;
 
     public MatchActions(){
         doublingCubePosition = 1;

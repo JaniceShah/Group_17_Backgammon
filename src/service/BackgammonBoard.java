@@ -2,11 +2,8 @@ package service;
 
 import dto.Checkers;
 import dto.Move;
-import dto.Player;
 
 import java.util.*;
-
-import static java.lang.Math.abs;
 
 public class BackgammonBoard {
 

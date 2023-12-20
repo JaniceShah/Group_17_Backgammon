@@ -146,8 +146,8 @@ public class BackgammonGame {
         }
 
         System.out.println("Match Over! " + 
-        (player1.getMatchScore() > player2.getMatchScore() ? "Winner of the match is: Player1" :
-         (player2.getMatchScore() > player1.getMatchScore() ? "Winner of the match is: Player2" : "No winner")));
+        (player1.getMatchScore() > player2.getMatchScore() ? "Winner of the match is: " + player1.getName() :
+         (player2.getMatchScore() > player1.getMatchScore() ? "Winner of the match is: " + player2.getName() : "No winner")));
 
          
     }

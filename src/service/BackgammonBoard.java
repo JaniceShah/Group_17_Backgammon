@@ -11,10 +11,10 @@ public class BackgammonBoard {
     public static int positionsNumber = 24;
     private static int matchLength;
 
-    private static List<Checkers> whiteOutCheckers;
-    private static List<Checkers> blackOutCheckers;
-    static List<Checkers> whiteCheckersTimeOut;
-    static List<Checkers> blackCheckersTimeOut;
+    private static List<Checkers> whiteOutCheckers = new ArrayList<>();
+    private static List<Checkers> blackOutCheckers = new ArrayList<>();
+    static List<Checkers> whiteCheckersTimeOut = new ArrayList<>();
+    static List<Checkers> blackCheckersTimeOut = new ArrayList<>();
     static boolean whiteEnd = true;
     static boolean blackEnd = false;
 
@@ -107,7 +107,7 @@ public class BackgammonBoard {
         }
     }
 
-    public void initialize(){
+    public static void initialize(){
         System.out.println("Welcome to Backgammon!");
         System.out.println("Match Length: " + matchLength + " games");
         System.out.println("Initial board:");

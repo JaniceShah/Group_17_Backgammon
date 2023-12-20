@@ -17,7 +17,7 @@ public class GetMoveOptions {
         return color == BackgammonBoard.colors.Black ? 1 : -1;
     }
 
-    public static void options(int dice1, int dice2, Boolean p1turn, Player playerRolling) {
+    public static void options(int dice1, int dice2, Boolean p1turn, Player playerRolling, boolean isTest) {
         int player = p1turn ? 1 : -1;
         int totalPlacesToMove = 0;
         if(dice2!=dice1){
@@ -62,7 +62,12 @@ public class GetMoveOptions {
             }
 
             System.out.print("Enter the letter code for the desired move (e.g., 'A'): ");
-            char userInput = scanner.next().toUpperCase().charAt(0);
+            char userInput;
+            if(!isTest){
+                userInput = scanner.next().toUpperCase().charAt(0);
+            }else{
+                userInput = 'A';
+            }
 
             if (userInput >= 'A' && userInput < 'A' + legalMoves.size()) {
                 Move selectedMove = legalMoves.get(userInput - 'A');

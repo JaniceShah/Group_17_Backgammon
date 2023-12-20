@@ -85,7 +85,7 @@ public class BackgammonGame {
                         System.out.println("Custom dice values set: " + customDice1 + " " + customDice2);
 
                         // Continue with the turn
-                        GetMoveOptions.options(customDice1, customDice2, p1Turn, player1);
+                        GetMoveOptions.options(customDice1, customDice2, p1Turn, player1, false);
                         PlayerActions.getPipCount(p1Turn ? player1 : player2);
                         p1Turn = !p1Turn;
                     } catch (NumberFormatException e) {
@@ -99,7 +99,7 @@ public class BackgammonGame {
                     case "roll": {
                         int dice1 = PlayerActions.rollDie();
                         int dice2 = PlayerActions.rollDie();
-                        GetMoveOptions.options(dice1, dice2, p1Turn, p1Turn ? player1 : player2);
+                        GetMoveOptions.options(dice1, dice2, p1Turn, p1Turn ? player1 : player2, false);
                         p1Turn = !p1Turn;
                         break;
                     }

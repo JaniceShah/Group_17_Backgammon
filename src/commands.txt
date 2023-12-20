@@ -1,0 +1,9 @@
+updateMatchScore Player1
+isDoubleOffered Player1 Player2
+displayDoublingCube
+doubleOffer
+acceptDouble
+refuseDouble
+roll
+pip
+hint

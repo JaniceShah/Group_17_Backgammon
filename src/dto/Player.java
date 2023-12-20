@@ -25,8 +25,8 @@ public class Player {
     }
 
     
-    public void incrementMatchScore() {
-        this.matchScore++;
+    public void setMatchScore(int matchScore) {
+        this.matchScore = matchScore;
     }
 
    
@@ -37,5 +37,5 @@ public class Player {
     public Player() {
         this.score = STARTING_PIP_COUNT;
         this.matchScore = 0; 
-}
+    }
 }

@@ -3,9 +3,8 @@ package service;
 import dto.Player;
 
 import java.util.Random;
-import java.util.Scanner;
 
-public class Actions {
+public class PlayerActions {
 
 
     public static String roll = "roll";
@@ -15,6 +14,7 @@ public class Actions {
     public static String double_cube = "double_cube";
     public static String accept = "accept";
     public static String refuse = "refuse";
+    public static String new_game = "new_game";
     private static int customDice1;
     private static int customDice2;
 
@@ -48,7 +48,7 @@ public class Actions {
         int[] diceResults = new int[numPlayers];
 
         for (int player = 0; player < numPlayers; player++) {
-            diceResults[player] = Actions.rollDie();
+            diceResults[player] = PlayerActions.rollDie();
             System.out.println("Player " + (player + 1) + " rolled a " + diceResults[player]);
             if(player==1 && diceResults[0]==diceResults[1]){
                 player=-1;
@@ -68,9 +68,6 @@ public class Actions {
 
         return firstPlayer;
     }
-    public static void pipCount(Object object) {
-    }
-   
 
 }
 

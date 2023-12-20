@@ -1,11 +1,15 @@
 package test;
 import dto.Player;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+
 import service.MatchActions;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+
+import org.junit.Before;
+import org.junit.Test;
 
 public class MatchTest {
 
@@ -14,8 +18,8 @@ public class MatchTest {
     private Player player1;
     private Player player2;
 
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() {
         matchActions = new MatchActions();
         player1 = new Player();
         player1.setName("Player1");
@@ -24,13 +28,13 @@ public class MatchTest {
     }
 
     @Test
-    void testUpdateMatchScore() {
+    public void testUpdateMatchScore() {
         matchActions.updateMatchScore(player1);
         assertEquals(1, player1.getMatchScore());
     }
 
     @Test
-    void testIsDoubleOffered() {
+    public void testIsDoubleOffered() {
         assertFalse(matchActions.isDoubleOffered());
 
         matchActions.doubleOffer(player1, player2);
@@ -39,7 +43,7 @@ public class MatchTest {
     }
 
     @Test
-    void testDisplayDoublingCube() {
+    public void testDisplayDoublingCube() {
         matchActions.doubleOffer(player1, player2);
         matchActions.displayDoublingCube();
 
@@ -47,7 +51,7 @@ public class MatchTest {
     }
 
     @Test
-    void testDoubleOffer() {
+    public void testDoubleOffer() {
         matchActions.doubleOffer(player1, player2);
 
         assertTrue(matchActions.isDoubleOffered());
@@ -56,7 +60,7 @@ public class MatchTest {
     }
 
     @Test
-    void testAcceptDouble() {
+    public void testAcceptDouble() {
         matchActions.doubleOffer(player1, player2);
         matchActions.acceptDouble();
 
@@ -66,7 +70,7 @@ public class MatchTest {
     }
 
     @Test
-    void testRefuseDouble() {
+    public void testRefuseDouble() {
         matchActions.doubleOffer(player1, player2);
         matchActions.refuseDouble();
 

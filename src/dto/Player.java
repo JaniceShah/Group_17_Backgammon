@@ -8,6 +8,9 @@ public class Player {
     private int score;
     private int matchScore; // Added matchScore field
 
+    public Player(String testPlayer, int i) {
+    }
+
     public String getName() {
         return name;
     }

@@ -11,14 +11,14 @@ public class BackgammonBoard {
     public static int positionsNumber = 24;
     private static int matchLength;
 
-    private static List<Checkers> whiteOutCheckers = new ArrayList<>();
-    private static List<Checkers> blackOutCheckers = new ArrayList<>();
+    public static List<Checkers> whiteOutCheckers = new ArrayList<>();
+    public static List<Checkers> blackOutCheckers = new ArrayList<>();
     static List<Checkers> whiteCheckersTimeOut = new ArrayList<>();
     static List<Checkers> blackCheckersTimeOut = new ArrayList<>();
     static boolean whiteEnd = true;
     static boolean blackEnd = false;
 
-    static List<List<Checkers>> checkersPosition= new ArrayList<>();
+    public static List<List<Checkers>> checkersPosition= new ArrayList<>();
 
     public static void setMatchLength(int length) {
         matchLength = length;

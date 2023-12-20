@@ -52,9 +52,18 @@ public class BackgammonGame {
                         + refuse + "' to reject the double offer" );
                 String input = scanner.nextLine();
 
-                if (input.equals(refuse) || input.equals(quit)) {
+                if (input.equals(quit)) {
                     System.out.println("Game over!");
                     break;
+                }
+                if(input.equals(refuse)){
+                    if (matchActions.isDoubleOffered()) {
+                        matchActions.refuseDouble();
+                        System.out.println("Game over!");
+                        break;
+                    } else {
+                        System.out.println("No double is currently offered.");
+                    }
                 }
 
                 if (input.equals(new_game)) {
@@ -119,15 +128,6 @@ public class BackgammonGame {
                     case "accept": {
                         if (matchActions.isDoubleOffered()) {
                             matchActions.acceptDouble();
-                        } else {
-                            System.out.println("No double is currently offered.");
-                        }
-                        break;
-                    }
-                    case "refuse": {
-                        if (matchActions.isDoubleOffered()) {
-                            matchActions.refuseDouble();
-
                         } else {
                             System.out.println("No double is currently offered.");
                         }

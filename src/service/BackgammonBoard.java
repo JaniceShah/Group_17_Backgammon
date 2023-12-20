@@ -198,7 +198,6 @@ public class BackgammonBoard {
     public static void applyEndMoves(Move move){
         colors color = move.destination==24? colors.Black: colors.White;
         Checkers removedChecker = checkersPosition.get(move.source).remove(0);
-        System.out.println(removedChecker);
         if(color==colors.White){
             whiteOutCheckers.add(removedChecker);
         }else{

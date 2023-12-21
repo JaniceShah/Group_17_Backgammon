@@ -47,7 +47,6 @@ public class MatchTest {
         matchActions.doubleOffer(player1, player2);
         matchActions.displayDoublingCube();
 
-        // You may want to check the console output manually since System.out.println cannot be easily tested.
     }
 
     @Test

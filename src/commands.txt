@@ -1,9 +1,9 @@
-updateMatchScore Player1
-isDoubleOffered Player1 Player2
-displayDoublingCube
-doubleOffer
-acceptDouble
-refuseDouble
+Ayushi
+Janice
+3
 roll
-pip
-hint
+a
+a
+roll
+a
+a

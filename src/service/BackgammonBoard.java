@@ -10,6 +10,9 @@ public class BackgammonBoard {
     public enum colors {Black, White}
     public static int positionsNumber = 24;
     private static int matchLength;
+    private static int whiteScore = 0;
+    private static int blackScore = 0;
+
 
     public static List<Checkers> whiteOutCheckers = new ArrayList<>();
     public static List<Checkers> blackOutCheckers = new ArrayList<>();
@@ -202,12 +205,45 @@ public class BackgammonBoard {
         }
     }
 
+//    //public static boolean isGameOver() {
+//        return (whiteOutCheckers.size() ==15 || blackOutCheckers.size() == 15 );
+//    }
+//
+//    //public static int determineWinner() {
+//        return (whiteOutCheckers.size() == 15) ? 1 : 2;
+//    }
+
     public static boolean isGameOver() {
-        return (whiteOutCheckers.size() ==15 || blackOutCheckers.size() == 15 );
+        return (whiteOutCheckers.size() == 15 || blackOutCheckers.size() == 15);
     }
 
     public static int determineWinner() {
-        return (whiteOutCheckers.size() == 15) ? 1 : 2;
+        int whiteOutCheckersSize = whiteOutCheckers.size();
+        int blackOutCheckersSize = blackOutCheckers.size();
+
+        if (whiteOutCheckersSize == 15 && blackOutCheckersSize == 15) {
+            announceResult("Backgammon");
+            updateScores(3, 0);
+        } else if (whiteOutCheckersSize == 15) {
+            announceResult("Gammon");
+            updateScores(2, 0);
+        } else if (blackOutCheckersSize == 15) {
+            announceResult("Gammon");
+            updateScores(0, 2);
+        } else {
+            announceResult("Single");
+            updateScores(1, 1);
+        }
+        return whiteOutCheckersSize;
     }
 
+    private static void announceResult(String result) {
+        System.out.println("Game over! Result: " + result);
+    }
+
+    private static void updateScores(int whiteScoreIncrement, int blackScoreIncrement) {
+        whiteScore += whiteScoreIncrement;
+        blackScore += blackScoreIncrement;
+        System.out.println("Match Score - White: " + whiteScore + ", Black: " + blackScore);
+    }
 }

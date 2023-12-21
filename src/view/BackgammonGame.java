@@ -5,6 +5,7 @@ import service.PlayerActions;
 import dto.Player;
 import service.GetMoveOptions;
 import service.MatchActions;
+import test.TestRunner;
 
 import java.util.Scanner;
 
@@ -131,6 +132,10 @@ public class BackgammonGame {
                         } else {
                             System.out.println("No double is currently offered.");
                         }
+                        break;
+                    }
+                    case "test": {
+                        TestRunner.main(new String[]{});
                         break;
                     }
                     default: {

@@ -1,9 +1,12 @@
-updateMatchScore Player1
-isDoubleOffered Player1 Player2
+Janice
+Ayushi
 displayDoublingCube
+roll
 doubleOffer
+isDoubleOffered
 acceptDouble
-refuseDouble
 roll
 pip
 hint
+doubleOffer
+refuseDouble

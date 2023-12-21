@@ -15,6 +15,8 @@ public class PlayerActions {
     public static String accept = "accept";
     public static String refuse = "refuse";
     public static String new_game = "new_game";
+
+    public static String test = "test";
     private static int customDice1;
     private static int customDice2;
 

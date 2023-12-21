@@ -115,8 +115,8 @@ public class BackgammonBoard {
         System.out.println("Match Length: " + matchLength + " games");
         System.out.println("Initial board:");
 
-        List<Integer> blackPositions = Arrays.asList(10, 11, 16, 18);
-        List<Integer> whitePositions = Arrays.asList(0, 1, 2, 3);
+        List<Integer> blackPositions = Arrays.asList(0, 11, 16, 18);
+        List<Integer> whitePositions = Arrays.asList(23, 12, 7, 5);
         List<Integer> numberOfCheckers = Arrays.asList(2,5,3,5);
         whiteOutCheckers = new ArrayList<>();
         checkersPosition= new ArrayList<>();

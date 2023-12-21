@@ -10,6 +10,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+import static service.PlayerActions.*;
+
 public class TestRunner {
 
     private static boolean p1Turn = true; // Assuming player 1 starts the turn
@@ -17,15 +19,32 @@ public class TestRunner {
     private static Player player2 = new Player();
 
     public static void main(String[] args) {
-        player1.setName("Player1");
-        player2.setName("Player1");
         BackgammonBoard.initialize();
         MatchActions matchActions = new MatchActions();
 
         try (BufferedReader br = new BufferedReader(new FileReader("./src/commands.txt"))) {
             String line;
+            int lineNum = 0;
             while ((line = br.readLine()) != null) {
-                executeCommand(line, matchActions);
+                if(lineNum==0){
+                    player1.setName(line);
+                    lineNum++;
+                }
+                else if(lineNum==1){
+                    player2.setName(line);
+                    lineNum++;
+                }
+                else if(line.equals(quit)){
+                    System.out.println("Game Over!");
+                    break;
+                }
+                else if(line.equals("refuseDouble")){
+                    matchActions.refuseDouble();
+                    break;
+                }
+                else
+                    executeCommand(line, matchActions);
+
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -36,9 +55,6 @@ public class TestRunner {
         String[] parts = command.split("\\s+");
 
         switch (parts[0]) {
-            case "updateMatchScore":
-                matchActions.updateMatchScore(player1);
-                break;
             case "isDoubleOffered":
                 matchActions.isDoubleOffered();
                 break;
@@ -50,9 +66,6 @@ public class TestRunner {
                 break;
             case "acceptDouble":
                 matchActions.acceptDouble();
-                break;
-            case "refuseDouble":
-                matchActions.refuseDouble();
                 break;
             case "roll": {
                 int dice1 = PlayerActions.rollDie();
@@ -68,11 +81,12 @@ public class TestRunner {
                 break;
             }
             case "hint": {
-                System.out.println("Following commands are allowed to be entered:\n1." + "pip" +
-                        "\n 2." + "roll" +
-                        "\n 3." + "quit" +
-                        "\n 4." + "new_game" +
-                        "\n 5." + "double_cube");
+                System.out.println("Following commands are allowed to be entered:\n1." + pip +
+                        "\n 2." + roll +
+                        "\n 3." + quit +
+                        "\n 4." + new_game +
+                        "\n 5." + test +
+                        "\n 6." + double_cube);
                 break;
             }
             // Add more cases as needed for other commands

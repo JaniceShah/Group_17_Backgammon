@@ -105,11 +105,11 @@ public class GetMoveOptions {
                     int sourcePos = selectedMove.source;
                     // For white checker outside the board
                     int numberOfMoveMade = abs(sourcePos - selectedMove.destination);
+                    PlayerActions.calculatePipCount(numberOfMoveMade, playerRolling);
                     if (numberOfMoveMade > 12) {
                         sourcePos = 24;
                     }
                     totalPlacesToMove -= numberOfMoveMade;
-                    PlayerActions.calculatePipCount(totalPlacesToMove, playerRolling);
                     if (dice1 == numberOfMoveMade && totalPlacesToMove == dice2) {
                         dice1 = 0;
                     } else if (dice2 == numberOfMoveMade && totalPlacesToMove == dice1) {

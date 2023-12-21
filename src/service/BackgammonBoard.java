@@ -205,13 +205,6 @@ public class BackgammonBoard {
         }
     }
 
-//    //public static boolean isGameOver() {
-//        return (whiteOutCheckers.size() ==15 || blackOutCheckers.size() == 15 );
-//    }
-//
-//    //public static int determineWinner() {
-//        return (whiteOutCheckers.size() == 15) ? 1 : 2;
-//    }
 
     public static boolean isGameOver() {
         return (whiteOutCheckers.size() == 15 || blackOutCheckers.size() == 15);

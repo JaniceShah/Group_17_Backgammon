@@ -42,8 +42,8 @@ class BackgammonBoardTest {
     @Test
     @DisplayName("Test Is Game Over")
     void testIsGameOver() {
-        BackgammonBoard.blackOutCheckers.clear();
-        BackgammonBoard.whiteOutCheckers.clear();
+        BackgammonBoard.blackBearOffCheckers.clear();
+        BackgammonBoard.whiteBearOffCheckers.clear();
         boolean isGameOver = BackgammonBoard.isGameOver();
         assertFalse(isGameOver);
     }
@@ -51,8 +51,8 @@ class BackgammonBoardTest {
     @Test
     @DisplayName("Test Determine Winner")
     void testDetermineWinner() {
-        BackgammonBoard.blackOutCheckers.clear();
-        BackgammonBoard.whiteOutCheckers.clear();
+        BackgammonBoard.blackBearOffCheckers.clear();
+        BackgammonBoard.whiteBearOffCheckers.clear();
         int winner = BackgammonBoard.determineWinner();
         assertEquals(0, winner);
     }

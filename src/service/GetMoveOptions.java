@@ -13,10 +13,25 @@ public class GetMoveOptions {
 
     private static Scanner scanner = new Scanner(System.in);
 
+    /**
+     * Gets the player color value based on the BackgammonBoard.colors enum.
+     *
+     * @param color The color of the player (Black or White).
+     * @return 1 for Black, -1 for White.
+     */
     public static int getColorPlayer(BackgammonBoard.colors color) {
         return color == BackgammonBoard.colors.Black ? 1 : -1;
     }
 
+    /**
+     * Displays legal move options for the player based on the rolled dice values.
+     *
+     * @param dice1      The value of the first die.
+     * @param dice2      The value of the second die.
+     * @param p1turn     True if it's Player 1's turn, false otherwise.
+     * @param playerRolling The player rolling the dice.
+     * @param isTest     True if running in test mode, false otherwise.
+     */
     public static void options(int dice1, int dice2, Boolean p1turn, Player playerRolling, boolean isTest) {
         int player = p1turn ? 1 : -1;
         int totalPlacesToMove = 0;
@@ -30,10 +45,10 @@ public class GetMoveOptions {
         while(totalPlacesToMove>0) {
             List<Move> legalMoves;
             int checkIfEndGame = 0;
-            if (!BackgammonBoard.whiteCheckersTimeOut.isEmpty() && checkNextTurn == 0) {
-                legalMoves = optionOutBoard(dice1, dice2, player, BackgammonBoard.whiteCheckersTimeOut);
-            } else if (!BackgammonBoard.blackCheckersTimeOut.isEmpty() && checkNextTurn == 1) {
-                legalMoves = optionOutBoard(dice1, dice2, player, BackgammonBoard.blackCheckersTimeOut);
+            if (!BackgammonBoard.whiteCheckersOnBar.isEmpty() && checkNextTurn == 0) {
+                legalMoves = optionOutBoard(dice1, dice2, player, BackgammonBoard.whiteCheckersOnBar);
+            } else if (!BackgammonBoard.blackCheckersOnBar.isEmpty() && checkNextTurn == 1) {
+                legalMoves = optionOutBoard(dice1, dice2, player, BackgammonBoard.blackCheckersOnBar);
             } else if ((BackgammonBoard.whiteEnd && !p1turn)|| (BackgammonBoard.blackEnd && p1turn)) {
                 checkIfEndGame = 1;
                 legalMoves = getLegalEndGameMoves(dice1, dice2, player, 0);
@@ -124,6 +139,15 @@ public class GetMoveOptions {
             }
         }
     }
+
+    /**
+     * Gets legal moves for a player based on the rolled dice values.
+     *
+     * @param dice1  The value of the first die.
+     * @param dice2  The value of the second die.
+     * @param player The player making the move.
+     * @return A list of legal moves.
+     */
     public static List<Move> getLegalMoves(int dice1, int dice2, int player) {
         List<Move> legalMoves = new ArrayList<>();
 
@@ -146,6 +170,13 @@ public class GetMoveOptions {
         return legalMoves;
     }
 
+    /**
+     * Checks if a move from a source to a destination is valid.
+     *
+     * @param source      The source position.
+     * @param destination The destination position.
+     * @return True if the move is valid, false otherwise.
+     */
     public static boolean isValidMove(int source, int destination) {
 
         if (source < 0 || source >= positionsNumber || destination < 0 || destination >= positionsNumber) {
@@ -175,6 +206,13 @@ public class GetMoveOptions {
         return true;
     }
 
+    /**
+     * Checks if a move with an out checker is valid.
+     *
+     * @param destination  The destination position.
+     * @param checkersList List of checkers on the bar.
+     * @return True if the move is valid, false otherwise.
+     */
     public static boolean isValidOutCheckerMove(int destination, List<Checkers> checkersList) {
 
         if (destination < 0 || destination >= positionsNumber) {
@@ -192,6 +230,15 @@ public class GetMoveOptions {
         return true;
     }
 
+    /**
+     * Gets legal moves for checkers on the bar attempting to move out of the board.
+     *
+     * @param dice1        The value of the first die.
+     * @param dice2        The value of the second die.
+     * @param player       The player making the move.
+     * @param checkersList List of checkers on the bar.
+     * @return A list of legal moves.
+     */
     private static List<Move> optionOutBoard(int dice1, int dice2, int player, List<Checkers> checkersList){
         List<Move> legalMoves = new ArrayList<>();
         // If player == 1 then it is white otherwise here, assigned -1 to it otherwise black which is -2
@@ -211,6 +258,15 @@ public class GetMoveOptions {
 
     }
 
+    /**
+     * Gets legal moves for checkers at the end of the game.
+     *
+     * @param dice1      The value of the first die.
+     * @param dice2      The value of the second die.
+     * @param player     The player making the move.
+     * @param moreMoves  Additional move options flag.
+     * @return A list of legal moves.
+     */
     public static List<Move> getLegalEndGameMoves(int dice1, int dice2, int player, int moreMoves) {
         List<Move> legalMoves = new ArrayList<>();
         int finalPos = 0;

@@ -5,8 +5,15 @@ import dto.Move;
 
 import java.util.*;
 
+
+/**
+ * Represents the state of a Backgammon board and provides methods for game management.
+ */
 public class BackgammonBoard {
 
+    /**
+     * Enum representing the colors of checkers on the board.
+     */
     public enum colors {Black, White}
     public static int positionsNumber = 24;
     private static int matchLength;
@@ -14,10 +21,10 @@ public class BackgammonBoard {
     private static int blackScore = 0;
 
 
-    public static List<Checkers> whiteOutCheckers = new ArrayList<>();
-    public static List<Checkers> blackOutCheckers = new ArrayList<>();
-    static List<Checkers> whiteCheckersTimeOut = new ArrayList<>();
-    static List<Checkers> blackCheckersTimeOut = new ArrayList<>();
+    public static List<Checkers> whiteBearOffCheckers = new ArrayList<>();
+    public static List<Checkers> blackBearOffCheckers = new ArrayList<>();
+    static List<Checkers> whiteCheckersOnBar = new ArrayList<>();
+    static List<Checkers> blackCheckersOnBar = new ArrayList<>();
     static boolean whiteEnd = true;
     static boolean blackEnd = false;
 
@@ -26,6 +33,11 @@ public class BackgammonBoard {
     public static void setMatchLength(int length) {
         matchLength = length;
     }
+
+    /**
+     * This method is used to print the board and show the current positions of the checkers
+     * it also prints the checkers present in bar or in
+     */
     public static void display() {
         
         System.out.println("| 13 14 15 16 17 18 |BAR| 19 20 21 22 23 24 |");
@@ -90,27 +102,32 @@ public class BackgammonBoard {
         System.out.println("+-------------------+---+-------------------+");
         System.out.println("| 12 11 10 09 08 07 |BAR| 06 05 04 03 02 01 |");
 
-        if(!whiteOutCheckers.isEmpty()){
-            System.out.println("The number of white checkers outside board are:"+ whiteOutCheckers);
+        if(!whiteBearOffCheckers.isEmpty()){
+            System.out.println("The number of white checkers outside board are:"+ whiteBearOffCheckers);
         }
-        if(!blackOutCheckers.isEmpty()){
-            System.out.println("The number of black checkers outside board are:"+ blackOutCheckers);
-        }
-
-        if(!whiteCheckersTimeOut.isEmpty()){
-            System.out.println("The number of white checkers timed out of board are:"+ whiteCheckersTimeOut);
-        }
-        if(!blackCheckersTimeOut.isEmpty()){
-            System.out.println("The number of black checkers timed out of board are:"+ blackCheckersTimeOut);
+        if(!blackBearOffCheckers.isEmpty()){
+            System.out.println("The number of black checkers outside board are:"+ blackBearOffCheckers);
         }
 
+        if(!whiteCheckersOnBar.isEmpty()){
+            System.out.println("The number of white checkers timed out of board are:"+ whiteCheckersOnBar);
+        }
+        if(!blackCheckersOnBar.isEmpty()){
+            System.out.println("The number of black checkers timed out of board are:"+ blackCheckersOnBar);
+        }
+
+        // Game over and winner determination logic
         if (isGameOver()) {
             int winner = determineWinner();
             System.out.println("Game over! Player " + winner + " wins!");
         }
     }
 
+    /**
+     * Initializes the Backgammon board with the starting configuration.
+     */
     public static void initialize(){
+        // Initialization logic
         System.out.println("Welcome to Backgammon!");
         System.out.println("Match Length: " + matchLength + " games");
         System.out.println("Initial board:");
@@ -118,11 +135,11 @@ public class BackgammonBoard {
         List<Integer> blackPositions = Arrays.asList(0, 11, 16, 18);
         List<Integer> whitePositions = Arrays.asList(23, 12, 7, 5);
         List<Integer> numberOfCheckers = Arrays.asList(2,5,3,5);
-        whiteOutCheckers = new ArrayList<>();
+        whiteBearOffCheckers = new ArrayList<>();
         checkersPosition= new ArrayList<>();
-        blackOutCheckers = Collections.EMPTY_LIST;
-        whiteCheckersTimeOut = Collections.EMPTY_LIST;
-        blackCheckersTimeOut = Collections.EMPTY_LIST;
+        blackBearOffCheckers = Collections.EMPTY_LIST;
+        whiteCheckersOnBar = Collections.EMPTY_LIST;
+        blackCheckersOnBar = Collections.EMPTY_LIST;
         whiteEnd = true;
         blackEnd = false;
 
@@ -149,6 +166,11 @@ public class BackgammonBoard {
         }
     }
 
+    /**
+     * Applies a move to the Backgammon board.
+     *
+     * @param move The move to apply.
+     */
     public static void applyMove(Move move) {
         int source = move.source;
         int destination = move.destination;
@@ -167,17 +189,17 @@ public class BackgammonBoard {
                 destinationList.get(0).getColor() != sourceColor &&
                 destinationList.size()==1) {
             if(destinationList.get(0).getColor()== colors.Black){
-                blackOutCheckers.add(destinationList.remove(0));
+                blackBearOffCheckers.add(destinationList.remove(0));
             }else{
-                whiteOutCheckers.add(destinationList.remove(0));
+                whiteBearOffCheckers.add(destinationList.remove(0));
             }
         }
 
         if(source==-1){
             if(move.destination<12){
-                checkersPosition.get(destination).add(blackOutCheckers.remove(0));
+                checkersPosition.get(destination).add(blackBearOffCheckers.remove(0));
             }else{
-                checkersPosition.get(destination).add(whiteOutCheckers.remove(0));
+                checkersPosition.get(destination).add(whiteBearOffCheckers.remove(0));
             }
             return;
         }
@@ -188,31 +210,46 @@ public class BackgammonBoard {
         //checkers to the movedOutCheckers list
         if (source == -1) {
             if(sourceColor==colors.Black){
-                blackCheckersTimeOut.add(checkersPosition.get(source).remove(0));
+                blackCheckersOnBar.add(checkersPosition.get(source).remove(0));
             } else {
-                whiteCheckersTimeOut.add(checkersPosition.get(source).remove(0));
+                whiteCheckersOnBar.add(checkersPosition.get(source).remove(0));
             }
             return;
         }
     }
+
+    /**
+     * Applies moves at the end of the game, specifically for checkers going off the board.
+     *
+     * @param move The move to apply at the end.
+     */
     public static void applyEndMoves(Move move){
         colors color = move.destination==24? colors.Black: colors.White;
         Checkers removedChecker = checkersPosition.get(move.source).remove(0);
         if(color==colors.White){
-            whiteOutCheckers.add(removedChecker);
+            whiteBearOffCheckers.add(removedChecker);
         }else{
-            blackOutCheckers.add(removedChecker);
+            blackBearOffCheckers.add(removedChecker);
         }
     }
 
-
+    /**
+     * Checks if the game is over.
+     *
+     * @return True if the game is over, false otherwise.
+     */
     public static boolean isGameOver() {
-        return (whiteOutCheckers.size() == 15 || blackOutCheckers.size() == 15);
+        return (whiteBearOffCheckers.size() == 15 || blackBearOffCheckers.size() == 15);
     }
 
+    /**
+     * Determines the winner and updates the scores.
+     *
+     * @return The number of white checkers outside the board.
+     */
     public static int determineWinner() {
-        int whiteOutCheckersSize = whiteOutCheckers.size();
-        int blackOutCheckersSize = blackOutCheckers.size();
+        int whiteOutCheckersSize = whiteBearOffCheckers.size();
+        int blackOutCheckersSize = blackBearOffCheckers.size();
 
         if (whiteOutCheckersSize == 15 && blackOutCheckersSize == 15) {
             announceResult("Backgammon");
@@ -230,10 +267,21 @@ public class BackgammonBoard {
         return whiteOutCheckersSize;
     }
 
+    /**
+     * Announces the result of the game.
+     *
+     * @param result The result of the game.
+     */
     private static void announceResult(String result) {
         System.out.println("Game over! Result: " + result);
     }
 
+    /**
+     * Updates the scores based on the game outcome.
+     *
+     * @param whiteScoreIncrement The increment in white player's score.
+     * @param blackScoreIncrement The increment in black player's score.
+     */
     private static void updateScores(int whiteScoreIncrement, int blackScoreIncrement) {
         whiteScore += whiteScoreIncrement;
         blackScore += blackScoreIncrement;

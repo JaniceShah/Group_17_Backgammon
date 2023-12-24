@@ -115,6 +115,12 @@ public class BackgammonBoard {
         if(!blackCheckersOnBar.isEmpty()){
             System.out.println("The number of black checkers timed out of board are:"+ blackCheckersOnBar);
         }
+
+        // Game over and winner determination logic
+        if (isGameOver()) {
+            int winner = determineWinner();
+            System.out.println("Game over! Player " + winner + " wins!");
+        }
     }
 
     /**

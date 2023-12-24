@@ -29,6 +29,9 @@ public class BackgammonGame {
             System.out.println("Game " + game);
             BackgammonBoard backgammonBoard = new BackgammonBoard();
             backgammonBoard.initialize();
+            // Setting pip count to start again
+            player1.setScore(Player.STARTING_PIP_COUNT);
+            player2.setScore(Player.STARTING_PIP_COUNT);
             BackgammonBoard.display();
             matchActions = new MatchActions();
             int firstPlayer = PlayerActions.determineFirstPlayer();
@@ -39,7 +42,6 @@ public class BackgammonGame {
 
             while (true) {
                 if (backgammonBoard.isGameOver()) {
-                    matchActions.updateMatchScore(backgammonBoard.determineWinner()==1? player1 : player2);
                     break;
                 }
 

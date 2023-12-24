@@ -205,7 +205,7 @@ public class BackgammonBoard {
             return;
         }
 
-        if(!whiteEnd && !blackEnd){
+        if(!whiteEnd || !blackEnd){
             checkIfGameEnding();
         }
         Checkers shiftedChecker = checkersPosition.get(source).remove(0);
@@ -242,13 +242,9 @@ public class BackgammonBoard {
         // them to move in end list
         if(whitetotal==15){
             whiteEnd = true;
-        }else if(whiteEnd){
-            whiteEnd = false;
         }
         if(blacktotal==15){
             blackEnd=true;
-        }else if(blackEnd){
-            blackEnd = false;
         }
     }
 

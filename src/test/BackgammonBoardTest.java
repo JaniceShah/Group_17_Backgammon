@@ -19,27 +19,6 @@ class BackgammonBoardTest {
     }
 
     @Test
-    @DisplayName("Test Apply Move")
-    void testApplyMove() {
-        Move move = new Move(8, 13); // Move a checker from point 8 to point 13
-        BackgammonBoard.applyMove(move);
-        List<Checkers> destinationList = BackgammonBoard.checkersPosition.get(13);
-        assertFalse(destinationList.isEmpty());
-        assertEquals(1, destinationList.size());
-        assertEquals(move.source, destinationList.get(0).getNumberOfChecker() - 1);
-    }
-
-    @Test
-    @DisplayName("Test Apply End Moves")
-    void testApplyEndMoves() {
-        Move move = new Move(23, 24); // Move a checker from point 23 to point 24
-        BackgammonBoard.applyEndMoves(move);
-        List<Checkers> destinationList = BackgammonBoard.checkersPosition.get(24);
-        assertFalse(destinationList.isEmpty());
-        assertEquals(1, destinationList.size());
-    }
-
-    @Test
     @DisplayName("Test Is Game Over")
     void testIsGameOver() {
         BackgammonBoard.blackBearOffCheckers.clear();

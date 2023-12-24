@@ -25,12 +25,6 @@ class PlayerActionsTest {
         assertTrue(result >= 1 && result <= 6, "Die roll result should be between 1 and 6");
     }
 
-//    @Test
-//    void setCustomDiceValuesShouldSetValues() {
-//        PlayerActions.setCustomDiceValues(3, 4);
-//        assertEquals(3, PlayerActions.rollDie());
-//        assertEquals(4, PlayerActions.rollDie());
-//    }
 
     @Test
     void calculatePipCountShouldReduceScore() {
@@ -48,13 +42,7 @@ class PlayerActionsTest {
         });
     }
 
-//    @Test
-//    void determineFirstPlayerShouldReturnValidPlayerIndex() {
-//        // Mocking random die rolls for testing
-//        PlayerActions.setCustomDiceValues(4, 2);
-//        int result = PlayerActions.determineFirstPlayer();
-//        assertEquals(0, result, "Player 1 should win with a roll of 4 over 2");
-//    }
+
 
     private String captureSystemOut(Runnable action) {
         // Redirect System.out to a ByteArrayOutputStream
@@ -66,7 +54,6 @@ class PlayerActionsTest {
             action.run();
             return outputStream.toString();
         } finally {
-            // Restore System.out
             System.setOut(originalOut);
         }
     }

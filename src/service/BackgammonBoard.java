@@ -294,6 +294,5 @@ public class BackgammonBoard {
     private static void updateScores(int whiteScoreIncrement, int blackScoreIncrement) {
         whiteScore += whiteScoreIncrement;
         blackScore += blackScoreIncrement;
-        System.out.println("Match Score - White: " + whiteScore + ", Black: " + blackScore);
     }
 }

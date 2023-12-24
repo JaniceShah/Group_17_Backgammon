@@ -25,7 +25,7 @@ public class BackgammonBoard {
     public static List<Checkers> blackBearOffCheckers = new ArrayList<>();
     static List<Checkers> whiteCheckersOnBar = new ArrayList<>();
     static List<Checkers> blackCheckersOnBar = new ArrayList<>();
-    static boolean whiteEnd = true;
+    static boolean whiteEnd = false;
     static boolean blackEnd = false;
 
     public static List<List<Checkers>> checkersPosition= new ArrayList<>();
@@ -137,10 +137,10 @@ public class BackgammonBoard {
         List<Integer> numberOfCheckers = Arrays.asList(2,5,3,5);
         whiteBearOffCheckers = new ArrayList<>();
         checkersPosition= new ArrayList<>();
-        blackBearOffCheckers = Collections.EMPTY_LIST;
-        whiteCheckersOnBar = Collections.EMPTY_LIST;
-        blackCheckersOnBar = Collections.EMPTY_LIST;
-        whiteEnd = true;
+        blackBearOffCheckers = new ArrayList<>();
+        whiteCheckersOnBar = new ArrayList<>();
+        blackCheckersOnBar = new ArrayList<>();
+        whiteEnd = false;
         blackEnd = false;
 
         int blackCheckers = 0;
@@ -189,33 +189,27 @@ public class BackgammonBoard {
                 destinationList.get(0).getColor() != sourceColor &&
                 destinationList.size()==1) {
             if(destinationList.get(0).getColor()== colors.Black){
-                blackBearOffCheckers.add(destinationList.remove(0));
+                blackCheckersOnBar.add(destinationList.remove(0));
             }else{
-                whiteBearOffCheckers.add(destinationList.remove(0));
+                whiteCheckersOnBar.add(destinationList.remove(0));
             }
         }
 
+        //moving checkers from bar back on the board
         if(source==-1){
             if(move.destination<12){
-                checkersPosition.get(destination).add(blackBearOffCheckers.remove(0));
+                checkersPosition.get(destination).add(blackCheckersOnBar.remove(0));
             }else{
-                checkersPosition.get(destination).add(whiteBearOffCheckers.remove(0));
+                checkersPosition.get(destination).add(whiteCheckersOnBar.remove(0));
             }
             return;
         }
 
+        if(!whiteEnd && !blackEnd){
+            checkIfGameEnding();
+        }
         Checkers shiftedChecker = checkersPosition.get(source).remove(0);
         checkersPosition.get(destination).add(shiftedChecker);
-
-        //checkers to the movedOutCheckers list
-        if (source == -1) {
-            if(sourceColor==colors.Black){
-                blackCheckersOnBar.add(checkersPosition.get(source).remove(0));
-            } else {
-                whiteCheckersOnBar.add(checkersPosition.get(source).remove(0));
-            }
-            return;
-        }
     }
 
     /**
@@ -230,6 +224,31 @@ public class BackgammonBoard {
             whiteBearOffCheckers.add(removedChecker);
         }else{
             blackBearOffCheckers.add(removedChecker);
+        }
+    }
+
+    private static void checkIfGameEnding(){
+        int whitetotal = 0, blacktotal = 0;
+        for(int i=0;i<positionsNumber; i++){
+            if(!checkersPosition.get(i).isEmpty()) {
+                if (i < 6) {
+                    whitetotal += checkersPosition.get(i).get(0).getColor() == colors.White ? checkersPosition.get(i).size() : 0;
+                } else if (i > 17 && i < 24) {
+                    blacktotal += checkersPosition.get(i).get(0).getColor() == colors.Black ? checkersPosition.get(i).size() : 0;
+                }
+            }
+        }
+        // If all the white checkers are in the last quadrant then mark it whiteEnd true to allow
+        // them to move in end list
+        if(whitetotal==15){
+            whiteEnd = true;
+        }else if(whiteEnd){
+            whiteEnd = false;
+        }
+        if(blacktotal==15){
+            blackEnd=true;
+        }else if(blackEnd){
+            blackEnd = false;
         }
     }
 
